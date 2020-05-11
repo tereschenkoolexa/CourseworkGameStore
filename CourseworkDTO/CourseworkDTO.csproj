@@ -8,4 +8,10 @@
     <ProjectReference Include="..\CourseworkDataAccess\CourseworkDataAccess.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Models\Product\Categories\" />
+    <Folder Include="Models\Product\Languages\" />
+    <Folder Include="Models\Product\SystemRequirement\" />
+  </ItemGroup>
+
 </Project>

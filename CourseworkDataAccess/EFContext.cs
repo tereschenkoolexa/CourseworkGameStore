@@ -1,4 +1,5 @@
 ﻿using CourseworkDataAccess.Entity;
+using CourseworkDataAccess.Entity.Store.Product;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -24,6 +25,11 @@ namespace CourseworkDataAccess
 
             base.OnModelCreating(builder);
         }
+
+        public DbSet<Product> Products { get; set; }
+        public DbSet<Languages> LanguagesProduct { get; set; }
+        public DbSet<Categories> CategoriesProduct { get; set; }
+        public DbSet<SystemRequirements> SystemRequirementsProduct { get; set; }
 
     }
 }

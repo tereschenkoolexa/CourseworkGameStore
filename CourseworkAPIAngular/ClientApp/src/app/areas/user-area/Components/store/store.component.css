@@ -1,0 +1,9 @@
+.item{
+  background:rgba(16, 179, 24, 0.432);
+  padding:30px;
+  color: white;
+}
+.example-card{
+  color: rgb(0,80,1) !important;
+
+}

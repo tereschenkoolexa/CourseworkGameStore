@@ -30,12 +30,12 @@ namespace CourseworkDomain
             public string CreateToken(User user)
             {
                 var roles = _userManager.GetRolesAsync(user).Result;
-                var fullName = _context.UserMoreInfos.FirstOrDefault(t => t.id == user.Id).FullName;
+                //var fullName = _context.UserMoreInfos.FirstOrDefault(t => t.id == user.Id).FullName;
                 var claims = new List<Claim>()
             {
                 //new Claim(JwtRegisteredClaimNames.Sub, user.Id)
                 new Claim("id", user.Id.ToString()),
-                new Claim("name", fullName),
+                //new Claim("name", fullName),
                 new Claim("email", user.Email)
             };
 

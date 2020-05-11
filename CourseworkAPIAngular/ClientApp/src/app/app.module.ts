@@ -28,6 +28,11 @@ import { ProductComponent } from './areas/user-area/Components/product/product.c
 import { ProductManagerComponent } from './areas/admin-area/Components/product-manager/product-manager.component';
 
 import { DemoNgZorroAntdModule } from './Ng-zorro-antd.module';
+import { DemoMaterialModule } from './material.module';
+import { registerLocaleData } from '@angular/common';
+import en from '@angular/common/locales/en';
+registerLocaleData(en);
+import { NZ_I18N, en_US } from 'ng-zorro-antd/i18n';
 
 const notifierOptions: NotifierOptions = {
   position: {horizontal: { position: 'right' }, vertical: { position: 'top' }}
@@ -63,10 +68,13 @@ const notifierOptions: NotifierOptions = {
      NotifierModule.withConfig(notifierOptions),
      BrowserAnimationsModule,
      NgxSpinnerModule,
-     DemoNgZorroAntdModule
+     DemoNgZorroAntdModule,
+     DemoMaterialModule
   ],
  exports: [],
- providers: [],
+ providers: [
+  { provide: NZ_I18N, useValue: en_US }
+ ],
  bootstrap: [AppComponent]
 })
 export class AppModule { }

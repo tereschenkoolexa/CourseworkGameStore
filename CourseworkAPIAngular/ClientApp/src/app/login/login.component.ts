@@ -41,7 +41,7 @@ export class LoginComponent implements OnInit {
       this.apiService.SignIn(this.model).subscribe(
       data => {
         if (data.status === 200) {
-
+          this.apiService.loginStatus.emit(true);
           console.log(data);
           window.localStorage.setItem('token', data.token );
 

@@ -1,5 +1,8 @@
 /* You can add global styles to this file, and also import other style files */
 @import "~angular-notifier/styles";
+@import "~ng-zorro-antd/ng-zorro-antd.min.css";
+@import '~@angular/material/prebuilt-themes/deeppurple-amber.css';
+
 /* Provide sufficient contrast against white background */
 a {
   color: #0366d6;
@@ -14,3 +17,11 @@ code {
   background-color: #1b6ec2;
   border-color: #1861ac;
 }
+
+body{
+  background-image: url(https://images.wallpaperscraft.com/image/trees_top_view_forest_119826_2560x1080.jpg)!important;
+  background-attachment: fixed;
+}
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

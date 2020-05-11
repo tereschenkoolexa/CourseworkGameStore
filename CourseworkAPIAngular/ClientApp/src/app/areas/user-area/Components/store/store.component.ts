@@ -7,4 +7,6 @@ import { Component } from '@angular/core';
   styleUrls: ['./store.component.css']
 })
 export class StoreComponent {
+  listOfPosition: string[] = ['bottomLeft', 'bottomCenter', 'bottomRight', 'topLeft', 'topCenter', 'topRight'];
+
 }
