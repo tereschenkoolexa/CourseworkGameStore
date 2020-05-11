@@ -47,6 +47,50 @@ namespace CourseworkAPIAngular.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "tblCategories",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_tblCategories", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "tblLanguage",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_tblLanguage", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "tblProduct",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(nullable: false),
+                    Price = table.Column<decimal>(nullable: false),
+                    Description = table.Column<string>(nullable: false),
+                    CompanyName = table.Column<string>(nullable: false),
+                    Image = table.Column<string>(nullable: false),
+                    Data = table.Column<DateTime>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_tblProduct", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "AspNetRoleClaims",
                 columns: table => new
                 {
@@ -172,6 +216,77 @@ namespace CourseworkAPIAngular.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "tblProductCategories",
+                columns: table => new
+                {
+                    ProdctId = table.Column<int>(nullable: false),
+                    CategoryId = table.Column<int>(nullable: false),
+                    Id = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_tblProductCategories", x => new { x.CategoryId, x.ProdctId });
+                    table.ForeignKey(
+                        name: "FK_tblProductCategories_tblCategories_CategoryId",
+                        column: x => x.CategoryId,
+                        principalTable: "tblCategories",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_tblProductCategories_tblProduct_ProdctId",
+                        column: x => x.ProdctId,
+                        principalTable: "tblProduct",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "tblProductLanguages",
+                columns: table => new
+                {
+                    ProdctId = table.Column<int>(nullable: false),
+                    LanguageId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_tblProductLanguages", x => new { x.LanguageId, x.ProdctId });
+                    table.ForeignKey(
+                        name: "FK_tblProductLanguages_tblLanguage_LanguageId",
+                        column: x => x.LanguageId,
+                        principalTable: "tblLanguage",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_tblProductLanguages_tblProduct_ProdctId",
+                        column: x => x.ProdctId,
+                        principalTable: "tblProduct",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "tblSystemRequirements",
+                columns: table => new
+                {
+                    ProdctId = table.Column<int>(nullable: false),
+                    OS = table.Column<string>(nullable: false),
+                    Processor = table.Column<string>(nullable: false),
+                    Memory = table.Column<string>(nullable: false),
+                    Graphics = table.Column<string>(nullable: false),
+                    Storege = table.Column<string>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_tblSystemRequirements", x => x.ProdctId);
+                    table.ForeignKey(
+                        name: "FK_tblSystemRequirements_tblProduct_ProdctId",
+                        column: x => x.ProdctId,
+                        principalTable: "tblProduct",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
@@ -210,6 +325,16 @@ namespace CourseworkAPIAngular.Migrations
                 column: "NormalizedUserName",
                 unique: true,
                 filter: "[NormalizedUserName] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_tblProductCategories_ProdctId",
+                table: "tblProductCategories",
+                column: "ProdctId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_tblProductLanguages_ProdctId",
+                table: "tblProductLanguages",
+                column: "ProdctId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -233,10 +358,28 @@ namespace CourseworkAPIAngular.Migrations
                 name: "tblMoreInfo");
 
             migrationBuilder.DropTable(
+                name: "tblProductCategories");
+
+            migrationBuilder.DropTable(
+                name: "tblProductLanguages");
+
+            migrationBuilder.DropTable(
+                name: "tblSystemRequirements");
+
+            migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "tblCategories");
+
+            migrationBuilder.DropTable(
+                name: "tblLanguage");
+
+            migrationBuilder.DropTable(
+                name: "tblProduct");
         }
     }
 }

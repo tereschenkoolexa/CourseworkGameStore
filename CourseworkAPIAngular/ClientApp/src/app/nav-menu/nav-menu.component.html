@@ -3,7 +3,7 @@
     class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3"
   >
     <div class="container">
-      <a class="navbar-brand" [routerLink]="['/']" ><img src="https://lh3.googleusercontent.com/hqF0MS6_hmQT4jForlLTIQufix4Om-10UUi_Y_UDnXlxpJdFvbKukFIjQmQ9P_vf5_UwDA=s170"></a>
+      <a class="navbar-brand" [routerLink]="['/']" ><img src="../../assets/Logo.png" style="height: 80px !important;"></a>
       <button
         class="navbar-toggler"
         type="button"
@@ -35,6 +35,10 @@
           <li *ngIf="isAdmin === true" class="nav-item" [routerLinkActive]="['link-active']">
             <a class="nav-link text-dark" [routerLink]="['admin-panel/user-manager']"
             >User Manager</a>
+          </li>
+          <li *ngIf="isAdmin === true" class="nav-item" [routerLinkActive]="['link-active']">
+            <a class="nav-link text-dark" [routerLink]="['admin-panel/list-product']"
+            >Product Manager</a>
           </li>
 
           <li *ngIf="isLoggedIn === false" class="nav-item" [routerLinkActive]="['link-active']">

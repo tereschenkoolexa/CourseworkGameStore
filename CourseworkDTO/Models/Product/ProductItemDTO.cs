@@ -19,6 +19,6 @@ namespace CourseworkDTO.Models.Product
 
         public string Image { get; set; }
 
-        public DataType Data { get; set; }
+        public DateTime Data { get; set; }
     }
 }

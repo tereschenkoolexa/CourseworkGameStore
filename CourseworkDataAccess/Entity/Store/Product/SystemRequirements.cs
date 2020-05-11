@@ -9,6 +9,7 @@ namespace CourseworkDataAccess.Entity.Store.Product
     [Table("tblSystemRequirements")]
     public class SystemRequirements
     {
+
         [Required]
         public string OS { get; set; }
         [Required]
@@ -17,8 +18,6 @@ namespace CourseworkDataAccess.Entity.Store.Product
         public string Memory { get; set; }
         [Required]
         public string Graphics { get; set; }
-        [Required]
-        public string DirectX { get; set; }
         [Required]
         public string Storege { get; set; }
 

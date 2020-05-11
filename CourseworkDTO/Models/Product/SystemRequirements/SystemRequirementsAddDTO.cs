@@ -5,7 +5,7 @@ using System.Text;
 
 namespace CourseworkDTO.Models.Product.SystemRequirements
 {
-    class SystemRequirementsAddDTO
+    public class SystemRequirementsAddDTO
     {
         [Required(ErrorMessage = "OS Required!")]
         public string OS { get; set; }
@@ -15,8 +15,6 @@ namespace CourseworkDTO.Models.Product.SystemRequirements
         public string Memory { get; set; }
         [Required(ErrorMessage = "Graphics Required!")]
         public string Graphics { get; set; }
-        [Required(ErrorMessage = "DirectX Required!")]
-        public string DirectX { get; set; }
         [Required(ErrorMessage = "Storege Required!")]
         public string Storege { get; set; }
     }

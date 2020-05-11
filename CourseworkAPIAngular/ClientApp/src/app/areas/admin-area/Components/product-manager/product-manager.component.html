@@ -1,3 +1,13 @@
-<p>
-  product-manager works!
-</p>
+  <div class="form">
+    <h2>Sing Up</h2>
+    <form class="login-form" #myForm="ngForm" (ngSubmit)="onSubmit();">
+      <input type="text" placeholder="Name" [(ngModel)]="model.name" name="name"/>
+      <input type="number" placeholder="Ptice" [(ngModel)]="model.price" name="price"/>
+      <input type="text" placeholder="Description" [(ngModel)]="model.description" name="description"/>
+      <input type="text" placeholder="Company Name" [(ngModel)]="model.companyName" name="companyName"/>
+      <input type="text" placeholder="Image"  [(ngModel)]="model.image" name="image"/>
+      <input type="date" placeholder="Data"  [(ngModel)]="model.data" name="data"/>
+
+      <button type="submit">Add</button>
+    </form>
+  </div>

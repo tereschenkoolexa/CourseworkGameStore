@@ -22,14 +22,12 @@ namespace CourseworkDataAccess.Entity.Store.Product
         [Required]
         public string Image { get; set; }
         [Required]
-        public DataType Data { get; set; }
+        public DateTime Data { get; set; }
 
         [Required]
-        public Categories CategoriesProduct { get; set; }
-        [Required]
-        public Languages LanguagesProduct { get; set; }
-        [Required]
         public SystemRequirements SystemRequirementProduct { get; set; }
+
+
     }
 
 }

@@ -5,7 +5,7 @@ using System.Text;
 
 namespace CourseworkDTO.Models.Product.Languages
 {
-    class LanguagesAddDTO
+    public class LanguagesAddDTO
     {
         [Required(ErrorMessage = "English required!")]
         public bool English { get; set; }

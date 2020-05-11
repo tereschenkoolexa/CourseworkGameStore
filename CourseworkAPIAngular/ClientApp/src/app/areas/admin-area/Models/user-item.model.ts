@@ -1,6 +1,6 @@
 import { Identifiers } from "@angular/compiler";
 
-export class UserItem{
+export class UserItem {
   id: string;
   fullName: string;
   age: number;

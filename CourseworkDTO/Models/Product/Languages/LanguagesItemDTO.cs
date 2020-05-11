@@ -4,7 +4,7 @@ using System.Text;
 
 namespace CourseworkDTO.Models.Product.Languages
 {
-    class LanguagesItemDTO
+    public class LanguagesItemDTO
     {
         public bool English { get; set; }
         public bool French { get; set; }

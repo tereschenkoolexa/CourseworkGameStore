@@ -46,8 +46,7 @@ this.userService.getAllUsers().subscribe(
     this.listOfData = AllUsers;
     this.listOfSearch = AllUsers;
     this.spinner.hide();
-  }
-)
+  });
     }
 
 Search(){

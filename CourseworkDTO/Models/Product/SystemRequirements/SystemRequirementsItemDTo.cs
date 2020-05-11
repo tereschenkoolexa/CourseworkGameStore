@@ -4,7 +4,7 @@ using System.Text;
 
 namespace CourseworkDTO.Models.Product.SystemRequirements
 {
-    class SystemRequirementsItemDTO
+    public class SystemRequirementsItemDTo
     {
 
         public string OS { get; set; }
@@ -14,8 +14,6 @@ namespace CourseworkDTO.Models.Product.SystemRequirements
         public string Memory { get; set; }
 
         public string Graphics { get; set; }
-
-        public string DirectX { get; set; }
 
         public string Storege { get; set; }
     }

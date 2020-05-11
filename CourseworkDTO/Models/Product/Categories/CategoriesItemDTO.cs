@@ -4,7 +4,7 @@ using System.Text;
 
 namespace CourseworkDTO.Models.Product.Categories
 {
-    class CategoriesItemDTO
+    public class CategoriesItemDTO
     {
         public bool Shooter { get; set; }
         public bool Fighting { get; set; }

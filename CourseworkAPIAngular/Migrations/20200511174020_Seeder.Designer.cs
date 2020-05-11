@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CourseworkAPIAngular.Migrations
 {
     [DbContext(typeof(EFContext))]
-    [Migration("20200511094836_Add product")]
-    partial class Addproduct
+    [Migration("20200511174020_Seeder")]
+    partial class Seeder
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -21,114 +21,67 @@ namespace CourseworkAPIAngular.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("CourseworkDataAccess.Entity.Store.Product.Categories", b =>
+            modelBuilder.Entity("CourseworkDataAccess.Entity.Store.Product.Category", b =>
                 {
-                    b.Property<int>("ProdctId")
-                        .HasColumnType("int");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<bool>("Action")
-                        .HasColumnType("bit");
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("Adventure")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("Fighting")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("Horror")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("Platformer")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("RPG")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("Racing")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("RolePlaying")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("Sandbox")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("Shooter")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("Simulator")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("Sports")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("Stealth")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("Strategy")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("Survival")
-                        .HasColumnType("bit");
-
-                    b.HasKey("ProdctId");
+                    b.HasKey("Id");
 
                     b.ToTable("tblCategories");
                 });
 
-            modelBuilder.Entity("CourseworkDataAccess.Entity.Store.Product.Languages", b =>
+            modelBuilder.Entity("CourseworkDataAccess.Entity.Store.Product.Communication.ProductCategories", b =>
                 {
+                    b.Property<int>("CategoryId")
+                        .HasColumnType("int");
+
                     b.Property<int>("ProdctId")
                         .HasColumnType("int");
 
-                    b.Property<bool>("Arabic")
-                        .HasColumnType("bit");
+                    b.Property<int>("Id")
+                        .HasColumnType("int");
 
-                    b.Property<bool>("Chinese")
-                        .HasColumnType("bit");
+                    b.HasKey("CategoryId", "ProdctId");
 
-                    b.Property<bool>("Czech")
-                        .HasColumnType("bit");
+                    b.HasIndex("ProdctId");
 
-                    b.Property<bool>("English")
-                        .HasColumnType("bit");
+                    b.ToTable("tblProductCategories");
+                });
 
-                    b.Property<bool>("French")
-                        .HasColumnType("bit");
+            modelBuilder.Entity("CourseworkDataAccess.Entity.Store.Product.Communication.ProductLanguages", b =>
+                {
+                    b.Property<int>("LanguageId")
+                        .HasColumnType("int");
 
-                    b.Property<bool>("German")
-                        .HasColumnType("bit");
+                    b.Property<int>("ProdctId")
+                        .HasColumnType("int");
 
-                    b.Property<bool>("Italian")
-                        .HasColumnType("bit");
+                    b.HasKey("LanguageId", "ProdctId");
 
-                    b.Property<bool>("Japanese")
-                        .HasColumnType("bit");
+                    b.HasIndex("ProdctId");
 
-                    b.Property<bool>("Korean")
-                        .HasColumnType("bit");
+                    b.ToTable("tblProductLanguages");
+                });
 
-                    b.Property<bool>("Polish")
-                        .HasColumnType("bit");
+            modelBuilder.Entity("CourseworkDataAccess.Entity.Store.Product.Language", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<bool>("Portuguese")
-                        .HasColumnType("bit");
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("Russian")
-                        .HasColumnType("bit");
+                    b.HasKey("Id");
 
-                    b.Property<bool>("Spanish")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("Turkish")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("Ukrainian")
-                        .HasColumnType("bit");
-
-                    b.HasKey("ProdctId");
-
-                    b.ToTable("tblLanguages");
+                    b.ToTable("tblLanguage");
                 });
 
             modelBuilder.Entity("CourseworkDataAccess.Entity.Store.Product.Product", b =>
@@ -142,10 +95,14 @@ namespace CourseworkAPIAngular.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Data")
-                        .HasColumnType("int");
+                    b.Property<DateTime>("Data")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Image")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -165,10 +122,6 @@ namespace CourseworkAPIAngular.Migrations
                 {
                     b.Property<int>("ProdctId")
                         .HasColumnType("int");
-
-                    b.Property<string>("DirectX")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Graphics")
                         .IsRequired()
@@ -412,20 +365,32 @@ namespace CourseworkAPIAngular.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("CourseworkDataAccess.Entity.Store.Product.Categories", b =>
+            modelBuilder.Entity("CourseworkDataAccess.Entity.Store.Product.Communication.ProductCategories", b =>
                 {
+                    b.HasOne("CourseworkDataAccess.Entity.Store.Product.Category", "CategoryOf")
+                        .WithMany()
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("CourseworkDataAccess.Entity.Store.Product.Product", "ProductOf")
-                        .WithOne("CategoriesProduct")
-                        .HasForeignKey("CourseworkDataAccess.Entity.Store.Product.Categories", "ProdctId")
+                        .WithMany()
+                        .HasForeignKey("ProdctId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("CourseworkDataAccess.Entity.Store.Product.Languages", b =>
+            modelBuilder.Entity("CourseworkDataAccess.Entity.Store.Product.Communication.ProductLanguages", b =>
                 {
+                    b.HasOne("CourseworkDataAccess.Entity.Store.Product.Language", "LanguageOf")
+                        .WithMany()
+                        .HasForeignKey("LanguageId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("CourseworkDataAccess.Entity.Store.Product.Product", "ProductOf")
-                        .WithOne("LanguagesProduct")
-                        .HasForeignKey("CourseworkDataAccess.Entity.Store.Product.Languages", "ProdctId")
+                        .WithMany()
+                        .HasForeignKey("ProdctId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

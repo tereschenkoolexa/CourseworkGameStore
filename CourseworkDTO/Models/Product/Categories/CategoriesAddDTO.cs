@@ -4,7 +4,7 @@ using System.Text;
 
 namespace CourseworkDTO.Models.Product.Categories
 {
-    class CategoriesAddDTO
+    public class CategoriesAddDTO
     {
 
         public bool Shooter { get; set; }

@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CourseworkAPIAngular.Migrations
 {
     [DbContext(typeof(EFContext))]
-    [Migration("20200420165403_First")]
+    [Migration("20200511173357_First")]
     partial class First
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -20,6 +20,133 @@ namespace CourseworkAPIAngular.Migrations
                 .HasAnnotation("ProductVersion", "3.1.1")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+            modelBuilder.Entity("CourseworkDataAccess.Entity.Store.Product.Category", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("tblCategories");
+                });
+
+            modelBuilder.Entity("CourseworkDataAccess.Entity.Store.Product.Communication.ProductCategories", b =>
+                {
+                    b.Property<int>("CategoryId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ProdctId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Id")
+                        .HasColumnType("int");
+
+                    b.HasKey("CategoryId", "ProdctId");
+
+                    b.HasIndex("ProdctId");
+
+                    b.ToTable("tblProductCategories");
+                });
+
+            modelBuilder.Entity("CourseworkDataAccess.Entity.Store.Product.Communication.ProductLanguages", b =>
+                {
+                    b.Property<int>("LanguageId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ProdctId")
+                        .HasColumnType("int");
+
+                    b.HasKey("LanguageId", "ProdctId");
+
+                    b.HasIndex("ProdctId");
+
+                    b.ToTable("tblProductLanguages");
+                });
+
+            modelBuilder.Entity("CourseworkDataAccess.Entity.Store.Product.Language", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("tblLanguage");
+                });
+
+            modelBuilder.Entity("CourseworkDataAccess.Entity.Store.Product.Product", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("CompanyName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("Data")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Image")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("Price")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("tblProduct");
+                });
+
+            modelBuilder.Entity("CourseworkDataAccess.Entity.Store.Product.SystemRequirements", b =>
+                {
+                    b.Property<int>("ProdctId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Graphics")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Memory")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("OS")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Processor")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Storege")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ProdctId");
+
+                    b.ToTable("tblSystemRequirements");
+                });
 
             modelBuilder.Entity("CourseworkDataAccess.Entity.User", b =>
                 {
@@ -236,6 +363,45 @@ namespace CourseworkAPIAngular.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens");
+                });
+
+            modelBuilder.Entity("CourseworkDataAccess.Entity.Store.Product.Communication.ProductCategories", b =>
+                {
+                    b.HasOne("CourseworkDataAccess.Entity.Store.Product.Category", "CategoryOf")
+                        .WithMany()
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("CourseworkDataAccess.Entity.Store.Product.Product", "ProductOf")
+                        .WithMany()
+                        .HasForeignKey("ProdctId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("CourseworkDataAccess.Entity.Store.Product.Communication.ProductLanguages", b =>
+                {
+                    b.HasOne("CourseworkDataAccess.Entity.Store.Product.Language", "LanguageOf")
+                        .WithMany()
+                        .HasForeignKey("LanguageId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("CourseworkDataAccess.Entity.Store.Product.Product", "ProductOf")
+                        .WithMany()
+                        .HasForeignKey("ProdctId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("CourseworkDataAccess.Entity.Store.Product.SystemRequirements", b =>
+                {
+                    b.HasOne("CourseworkDataAccess.Entity.Store.Product.Product", "ProductOf")
+                        .WithOne("SystemRequirementProduct")
+                        .HasForeignKey("CourseworkDataAccess.Entity.Store.Product.SystemRequirements", "ProdctId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("CourseworkDataAccess.Entity.UserMoreInfo", b =>

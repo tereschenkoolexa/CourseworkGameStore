@@ -5,7 +5,7 @@ using System.Text;
 
 namespace CourseworkDTO.Models.Product
 {
-    class ProductAddDTO
+     public class ProductAddDTO
     {
         [Required(ErrorMessage = "Name is Rrequired!")]
         public string Name { get; set; }
@@ -18,6 +18,6 @@ namespace CourseworkDTO.Models.Product
         [Required(ErrorMessage = "Image is Rrequired!")]
         public string Image { get; set; }
         [Required(ErrorMessage = "Data is Rrequired!")]
-        public DataType Data { get; set; }
+        public DateTime Data { get; set; }
     }
 }
