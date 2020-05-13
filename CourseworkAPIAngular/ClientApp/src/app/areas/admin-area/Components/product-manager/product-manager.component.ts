@@ -7,6 +7,9 @@ import { ProductManagerService } from '../../Services/product-manager.service';
 import { ProductAdd } from '../../Models/product-add.model';
 import { ApiService } from 'src/app/core/api.service';
 import { Router } from '@angular/router';
+import { LanguageItem } from '../../Models/language-item.model';
+import { CategoriesItem } from '../../Models/categories-item.model';
+import { SysReqAdd } from '../../Models/sysreq-add.model';
 
 @Component({
   selector: 'app-product-manager',
@@ -15,6 +18,14 @@ import { Router } from '@angular/router';
 })
 export class ProductManagerComponent implements OnInit {
 
+  listOfDataLang: LanguageItem[] = [];
+  listOfDataCateg: CategoriesItem[] = [];
+
+  selectedCategies: number[] = [];
+  selectedLanguages: number[] = [];
+
+
+  modelSysReq = new SysReqAdd;
   model = new ProductAdd;
   confirmPassword: string;
   isError: boolean;
@@ -27,9 +38,65 @@ export class ProductManagerComponent implements OnInit {
 
   ngOnInit() {
     this.isError = false;
+    this.spiner.show();
+    this.productService.getAllLanguages().subscribe(
+      (AllLanguages: LanguageItem[]) => {
+      this.listOfDataLang = AllLanguages;
+      });
+    this.productService.getAllCategories().subscribe(
+      (AllCategories: CategoriesItem[]) => {
+      this.listOfDataCateg = AllCategories;
+      this.spiner.hide();
+      });
+  }
+
+  setCategory(id: number) {
+    for(let i = 0; i < this.listOfDataCateg.length; i++){
+      if(this.listOfDataCateg[i].idCategory === id){
+        if(this.listOfDataCateg[i].isChecked === true) {
+          this.listOfDataCateg[i].isChecked = false;
+        }
+        else {
+          this.listOfDataCateg[i].isChecked = true;
+        }
+        console.log(this.listOfDataCateg[i]);
+        break;
+      }
+    }
+  }
+
+  setLanguage(id: number) {
+    for(let i = 0; i < this.listOfDataLang.length; i++){
+      if(this.listOfDataLang[i].idLanguage === id){
+        if(this.listOfDataLang[i].isChecked === true) {
+          this.listOfDataLang[i].isChecked = false;
+        }
+        else {
+          this.listOfDataLang[i].isChecked = true;
+        }
+        console.log(this.listOfDataLang[i]);
+        break;
+      }
+    }
   }
 
   onSubmit() {
+
+    for(let i = 0; i < this.listOfDataCateg.length; i++){
+      if(this.listOfDataCateg[i].isChecked === true){
+        this.selectedCategies.push(this.listOfDataCateg[i].idCategory);
+      }
+    }
+    console.log(this.selectedCategies);
+
+    for(let i = 0; i < this.listOfDataLang.length; i++){
+      if(this.listOfDataLang[i].isChecked === true){
+        this.selectedLanguages.push(this.listOfDataLang[i].idLanguage);
+      }
+    }
+    console.log(this.selectedLanguages);
+
+
     this.spiner.show();
     setTimeout(() => {
       this.spiner.hide();
@@ -58,7 +125,33 @@ export class ProductManagerComponent implements OnInit {
       this.notifier.notify('error', 'Please, enter price!');
       this.isError = true;
     }
+    if (this.modelSysReq.os === null) {
+      this.notifier.notify('error', 'Please, enter OS!');
+      this.isError = true;
+    }
+    if (this.modelSysReq.processor === null) {
+      this.notifier.notify('error', 'Please, enter Processor!');
+      this.isError = true;
+    }
+    if (this.modelSysReq.graphics === null) {
+      this.notifier.notify('error', 'Please, enter Graphics!');
+      this.isError = true;
+    }
+    if (this.modelSysReq.memory === null) {
+      this.notifier.notify('error', 'Please, enter Memory!');
+      this.isError = true;
+    }
+    if (this.modelSysReq.storege === null) {
+      this.notifier.notify('error', 'Please, enter Storege!');
+      this.isError = true;
+    }
     if (this.isError === false) {
+      this.model.sysreqProduct = this.modelSysReq;
+      this.model.listidCateg = this.selectedCategies;
+      this.model.listidLang = this.selectedLanguages;
+
+      console.log(this.model);
+
       this.productService.ProductAdd(this.model).subscribe(
         data => {
           console.log(data);
@@ -76,6 +169,9 @@ export class ProductManagerComponent implements OnInit {
           console.log(errors);
         });
     }
+
+    this.selectedCategies = [];
+    this.selectedLanguages = [];
 
   }
 }

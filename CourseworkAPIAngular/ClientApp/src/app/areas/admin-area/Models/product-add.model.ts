@@ -1,3 +1,5 @@
+import { SysReqAdd } from "./sysreq-add.model";
+
 export class ProductAdd{
   id: number;
   name: string;
@@ -6,6 +8,11 @@ export class ProductAdd{
   companyName: string;
   image: string;
   data: any;
+
+  sysreqProduct: SysReqAdd;
+
+  listidLang: number[];
+  listidCateg: number[];
 
   constructor(){
     this.id = null;

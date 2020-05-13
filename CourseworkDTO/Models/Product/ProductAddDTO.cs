@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CourseworkDTO.Models.Product.SystemRequirements;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
@@ -19,5 +20,16 @@ namespace CourseworkDTO.Models.Product
         public string Image { get; set; }
         [Required(ErrorMessage = "Data is Rrequired!")]
         public DateTime Data { get; set; }
+
+        [Required(ErrorMessage = "sysreqProduct is Rrequired!")]
+        public SystemRequirementsAddDTO sysreqProduct { get; set; }
+
+        
+        [Required(ErrorMessage = "listIdLang is Rrequired!")]
+        public List<int> listIdLang { get; set; }
+        [Required(ErrorMessage = "listIdCateg is Rrequired!")]
+        public List<int> listIdCateg { get; set; }
+
+
     }
 }

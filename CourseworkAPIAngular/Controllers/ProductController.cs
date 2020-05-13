@@ -1,17 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using CourseworkAPIAngular.Helper;
+﻿using CourseworkAPIAngular.Helper;
 using CourseworkDataAccess;
 using CourseworkDataAccess.Entity.Store.Product;
+using CourseworkDataAccess.Entity.Store.Product.Communication;
 using CourseworkDTO.Models.Product;
 using CourseworkDTO.Models.Product.Categories;
+using CourseworkDTO.Models.Product.Communication.ProductCategories;
+using CourseworkDTO.Models.Product.Communication.ProductLanguages;
 using CourseworkDTO.Models.Product.Languages;
 using CourseworkDTO.Models.Product.SystemRequirements;
 using CourseworkDTO.Models.Results;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace CourseworkAPIAngular.Controllers
 {
@@ -30,7 +32,7 @@ namespace CourseworkAPIAngular.Controllers
         }
 
         [HttpPost("addProduct")]
-        public async Task<ResultDTO> AddProduct([FromBody] ProductAddDTO model/*, [FromBody] SystemRequirementsAddDTO modelSystemRequirements*/)
+        public async Task<ResultDTO> AddProduct([FromBody] ProductAddDTO model)
         {
             if (!ModelState.IsValid)
             {
@@ -53,19 +55,43 @@ namespace CourseworkAPIAngular.Controllers
                     Data = model.Data,
                 };
                 _context.Products.Add(product);
+                _context.SaveChanges();
+                int idProduct = (from v in _context.Products orderby v.Id descending select v).FirstOrDefault().Id;
+                var systemrequirements = new SystemRequirements()
+                {
 
-                //var systemrequirements = new SystemRequirements()
-                //{
+                    OS = model.sysreqProduct.OS,
+                    Processor = model.sysreqProduct.Processor,
+                    Graphics = model.sysreqProduct.Graphics,
+                    Memory = model.sysreqProduct.Memory,
+                    Storege = model.sysreqProduct.Storege,
+                    ProdctId = idProduct
+                };
+        
+                _context.SystemRequirementsProduct.Add(systemrequirements);
 
-                //    OS = modelSystemRequirements.OS,
-                //    Processor = modelSystemRequirements.Processor,
-                //    Graphics = modelSystemRequirements.Graphics,
-                //    Memory = modelSystemRequirements.Memory,
-                //    Storege = modelSystemRequirements.Storege,
-                //    ProdctId = product.Id
-                //};
-                //_context.SystemRequirementsProduct.Add(systemrequirements);
-         
+                foreach ( var item in model.listIdLang)
+                {
+
+                    ProductLanguages temp = new ProductLanguages();
+
+                    temp.ProdctId = idProduct;
+                    temp.LanguageId = item;
+
+                    _context.ProductLanguages.Add(temp);
+                }
+
+                foreach (var item in model.listIdCateg)
+                {
+
+                    ProductCategories temp = new ProductCategories();
+
+                    temp.ProdctId = idProduct;
+                    temp.CategoryId = item;
+
+                    _context.ProductCategories.Add(temp);
+                }
+
                 _context.SaveChanges();
                 
 
@@ -77,29 +103,132 @@ namespace CourseworkAPIAngular.Controllers
             }
         }
 
-        //[HttpGet("SysReqProduct/{Pid}")]
-        //public IEnumerable<SystemRequirementsItemDTo> getSystemRequirementsProduct(int id)
-        //{
+        [HttpGet("GetProduct/{id}")]
+        public ProductItemDTO getProduct(int id)
+        {
 
-        //    SystemRequirementsItemDTo data = new SystemRequirementsItemDTo();
-        //    var dataFormDB = _context.Products.ToList();
-        //    foreach (var item in dataFormDB)
-        //    {
+            var data = _context.Products.FirstOrDefault(t => t.Id == id);
+            ProductItemDTO prod = new ProductItemDTO();
+            prod.Name = data.Name;
+            prod.CompanyName = data.CompanyName;
+            prod.Price = data.Price;
+            prod.Description = data.Description;
+            prod.Image = data.Image;
+            prod.Data = data.Data;
 
-        //        ProductItemDTO temp = new ProductItemDTO();
+            return prod;
+        }
 
-        //        temp.CompanyName = item.CompanyName;
-        //        temp.Data = item.Data;
-        //        temp.Id = item.Id;
-        //        temp.Image = item.Image;
-        //        temp.Name = item.Name;
-        //        temp.Price = item.Price;
+        [HttpGet("SysReqProduct/{id}")]
+        public SystemRequirementsItemDTo getSystemRequirementsProduct(int id)
+        {
 
-        //        data.Add(temp);
+            var data = _context.SystemRequirements.FirstOrDefault(t => t.ProdctId == id);
+            SystemRequirementsItemDTo sysreqProduct = new SystemRequirementsItemDTo();
 
-        //    }
-        //    return data;
-        //}
+            sysreqProduct.IdProdut = data.ProdctId;
+            sysreqProduct.OS = data.OS;
+            sysreqProduct.Processor = data.Processor;
+            sysreqProduct.Graphics = data.Graphics;
+            sysreqProduct.Memory = data.Memory;
+            sysreqProduct.Storege = data.Storege;
+            
+            return sysreqProduct;
+        }
+
+        [HttpGet("LanguagesProduct/{id}")]
+        public IEnumerable<LanguagesItemDTO> getLanguagesProduct(int id)
+        {
+
+            List<LanguagesItemDTO> data = new List<LanguagesItemDTO>();
+
+
+            foreach(var item in _context.ProductLanguages)
+            {
+                if(item.ProdctId == id)
+                {
+                    Language temp = _context.Languages.FirstOrDefault(t => t.Id == item.LanguageId);
+
+                    LanguagesItemDTO tempItem = new LanguagesItemDTO();
+
+                    tempItem.idLanguage = temp.Id;
+                    tempItem.nameLanguage = temp.Name;
+
+                    data.Add(tempItem);
+                }
+            }
+            return data;
+
+        }
+
+        [HttpGet("CategoriesProduct/{id}")]
+        public IEnumerable<CategoriesItemDTO> getCategoriesProduct(int id)
+        {
+
+            List<CategoriesItemDTO> data = new List<CategoriesItemDTO>();
+
+
+            foreach (var item in _context.ProductCategories)
+            {
+                if (item.ProdctId == id)
+                {
+                    Category temp = _context.Categories.FirstOrDefault(t => t.Id == item.CategoryId);
+
+                    CategoriesItemDTO tempItem = new CategoriesItemDTO();
+
+                    tempItem.idCategory = temp.Id;
+                    tempItem.nameCategory = temp.Name;
+
+                    data.Add(tempItem);
+                }
+            }
+            return data;
+
+        }
+        
+        [HttpGet("GetLanguages")]
+        public IEnumerable<LanguagesItemDTO> GetLanguages()
+        {
+
+
+            List<LanguagesItemDTO> data = new List<LanguagesItemDTO>();
+            var dataFormDB = _context.Languages.ToList();
+            foreach (var item in dataFormDB)
+            {
+
+                LanguagesItemDTO temp = new LanguagesItemDTO();
+
+                temp.idLanguage = item.Id;
+                temp.nameLanguage = item.Name;
+
+                data.Add(temp);
+
+            }
+            return data;
+
+        }
+
+        [HttpGet("GetCategories")]
+        public IEnumerable<CategoriesItemDTO> GetCategories()
+        {
+
+
+            List<CategoriesItemDTO> data = new List<CategoriesItemDTO>();
+            var dataFormDB = _context.Categories.ToList();
+            foreach (var item in dataFormDB)
+            {
+
+                CategoriesItemDTO temp = new CategoriesItemDTO();
+
+                temp.idCategory = item.Id;
+                temp.nameCategory = item.Name;
+
+                data.Add(temp);
+
+            }
+            return data;
+
+        }
 
         [HttpGet]
         public IEnumerable<ProductItemDTO> getProducts()
@@ -133,12 +262,25 @@ namespace CourseworkAPIAngular.Controllers
                 var product = _context.Products.FirstOrDefault(t => t.Id == id);
                 var systemRequirementsProduct = _context.SystemRequirementsProduct.FirstOrDefault(t => t.ProdctId == id);
                 _context.Products.Remove(product);
+                foreach(var item in _context.ProductCategories)
+                {
+                    if(item.ProdctId == id)
+                    {
+                        _context.ProductCategories.Remove(item);
+                    }
+                }
+                foreach (var item in _context.ProductLanguages)
+                {
+                    if (item.ProdctId == id)
+                    {
+                        _context.ProductLanguages.Remove(item);
+                    }
+                }
                 if (systemRequirementsProduct != null)
                 {
                     _context.SystemRequirementsProduct.Remove(systemRequirementsProduct);
-
-                    _context.SaveChanges();
                 }
+                    _context.SaveChanges();
                 return new ResultDTO
                 {
                     Status = 200,

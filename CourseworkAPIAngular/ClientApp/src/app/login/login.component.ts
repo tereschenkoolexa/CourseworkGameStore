@@ -48,7 +48,7 @@ export class LoginComponent implements OnInit {
           const jwtToken = data.token.split('.')[1];
           const decodedJwtJsonToken = window.atob(jwtToken);
           const decodedJwtToken = JSON.parse(decodedJwtJsonToken);
-
+          
           if(decodedJwtToken.roles === 'User'){
             this.route.navigate(['/']);
           } else if (decodedJwtToken.roles === 'Admin') {

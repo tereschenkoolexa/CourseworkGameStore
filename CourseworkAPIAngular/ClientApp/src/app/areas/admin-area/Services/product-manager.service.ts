@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { ApiResult } from 'src/app/Models/result.model';
 import { ProductAdd } from '../Models/product-add.model';
 import { Observable } from 'rxjs';
+import { SysReqAdd } from '../Models/sysreq-add.model';
 @Injectable({
   providedIn: 'root'
 })
@@ -12,15 +13,24 @@ export class ProductManagerService {
   baseUrl = '/api/Product';
 
   ProductAdd(model: ProductAdd): Observable<ApiResult> {
-    return this.http.post<ApiResult>(this.baseUrl + '/addProduct', model);
+    return this.http.post<ApiResult>(this.baseUrl + `/addProduct`, model);
   }
 
   getAllProducts() {
     return this.http.get(this.baseUrl);
   }
 
+  getAllLanguages() {
+    return this.http.get(this.baseUrl + '/GetLanguages');
+  }
+
+  getAllCategories() {
+    return this.http.get(this.baseUrl + '/GetCategories');
+  }
+
+
   RemoveProduct(id: number){
-    return this.http.post(this.baseUrl + '/RemoveProduct' + '/' + id, id)
+    return this.http.post(this.baseUrl + '/RemoveProduct' + '/' + id, id);
 
   }
 }

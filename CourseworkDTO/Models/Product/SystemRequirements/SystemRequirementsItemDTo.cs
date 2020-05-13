@@ -7,6 +7,8 @@ namespace CourseworkDTO.Models.Product.SystemRequirements
     public class SystemRequirementsItemDTo
     {
 
+        public int IdProdut { get; set; }
+
         public string OS { get; set; }
 
         public string Processor { get; set; }

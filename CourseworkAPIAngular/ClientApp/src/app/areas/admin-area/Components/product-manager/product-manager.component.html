@@ -1,13 +1,75 @@
   <div class="form">
-    <h2>Sing Up</h2>
-    <form class="login-form" #myForm="ngForm" (ngSubmit)="onSubmit();">
+    <h2>Add product</h2>
+    <form  #myForm="ngForm" (ngSubmit)="onSubmit();">
+      <div>
       <input type="text" placeholder="Name" [(ngModel)]="model.name" name="name"/>
       <input type="number" placeholder="Ptice" [(ngModel)]="model.price" name="price"/>
       <input type="text" placeholder="Description" [(ngModel)]="model.description" name="description"/>
       <input type="text" placeholder="Company Name" [(ngModel)]="model.companyName" name="companyName"/>
       <input type="text" placeholder="Image"  [(ngModel)]="model.image" name="image"/>
       <input type="date" placeholder="Data"  [(ngModel)]="model.data" name="data"/>
+      </div>
 
-      <button type="submit">Add</button>
+      <h3>sysReq</h3>
+      <div>
+      <input type="text" placeholder="OS" [(ngModel)]="modelSysReq.os" name="os"/>
+      <input type="text" placeholder="Processor" [(ngModel)]="modelSysReq.processor" name="processor"/>
+      <input type="text" placeholder="Graphics" [(ngModel)]="modelSysReq.graphics" name="graphics"/>
+      <input type="text" placeholder="Memory" [(ngModel)]="modelSysReq.memory" name="memory"/>
+      <input type="text" placeholder="Storege"  [(ngModel)]="modelSysReq.storege" name="storege"/>
+    </div>
+    <h3>lang</h3>
+
+    <nz-table
+    #rowSelectionTableLang
+    [nzFrontPagination]="false"
+    [nzShowPagination]="false"
+    [nzScroll]="{ y: '720px' }"
+    [nzData]="listOfDataLang"
+  >
+    <thead>
+      <tr>
+        <th nzWidth='10%'></th>
+        <th>Name</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let data of rowSelectionTableLang.data">
+        <td>
+          <input type="checkbox" (click)="setLanguage(data.idLanguage)" >
+        </td>
+        <td>{{ data.nameLanguage }}</td>
+      </tr>
+    </tbody>
+  </nz-table>
+
+  <h3>cate</h3>
+    <nz-table
+    #rowSelectionTableCategory
+    [nzFrontPagination]="false"
+    [nzShowPagination]="false"
+    [nzScroll]="{ y: '720px' }"
+    [nzData]="listOfDataCateg"
+  >
+    <thead>
+
+      <tr>
+        <th nzWidth='10%'></th>
+        <th>Name</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let data of rowSelectionTableCategory.data">
+        <td>
+          <input type="checkbox" (click)="setCategory(data.idCategory)" >
+        </td>
+        <td>{{ data.nameCategory }}</td>
+      </tr>
+    </tbody>
+  </nz-table>
+
+
+
+  <button type="submit">Add</button>
     </form>
   </div>

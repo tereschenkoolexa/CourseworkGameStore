@@ -9,8 +9,7 @@ namespace CourseworkDataAccess.Entity.Store.Product.Communication
     [Table("tblProductCategories")]
     public class ProductCategories
     {
-        [Key, Column(Order = 0)]
-        public int Id { get; set; }
+
         [Key, ForeignKey("ProductOf"), Column(Order = 1)]
         public int ProdctId { get; set; }
         public virtual Product ProductOf { get; set; }
