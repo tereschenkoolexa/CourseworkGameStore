@@ -85,6 +85,48 @@ namespace CourseworkAPIAngular.Controllers
                 };
             }
         }
+
+        [HttpGet("{id}")]
+        public UserItemDTO GetUser([FromRoute]string id)
+        {
+            var user = _context.Users.FirstOrDefault(t => t.Id == id);
+            var userMoreInfo = _context.UserMoreInfos.FirstOrDefault(t => t.id == id);
+
+
+            UserItemDTO model = new UserItemDTO();
+            model.Id = user.Id;
+            model.Email = user.Email;
+            model.Phone = user.PhoneNumber;
+
+            if (userMoreInfo != null)
+            {
+                model.Age = userMoreInfo.Age;
+                model.fullName = userMoreInfo.FullName;
+                model.Address = userMoreInfo.Address;
+            }
+
+            return model;
+        }
+
+        [HttpPost("editProductr/{id}")]
+        public ResultDTO EditProductr([FromRoute]string id, [FromBody]UserItemDTO model)
+        {
+            var user = _context.Users.FirstOrDefault(t => t.Id == id);
+            var userMoreInfo = _context.UserMoreInfos.FirstOrDefault(t => t.id == id);
+
+            user.PhoneNumber = model.Phone;
+            userMoreInfo.FullName = model.fullName;
+            user.Email = model.Email;
+
+            _context.SaveChanges();
+
+            return new ResultDTO
+            {
+                Status = 200,
+                Message = "OK"
+            };
+
+        }
     }
 
 

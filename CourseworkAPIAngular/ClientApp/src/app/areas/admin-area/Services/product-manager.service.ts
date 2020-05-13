@@ -4,6 +4,7 @@ import { ApiResult } from 'src/app/Models/result.model';
 import { ProductAdd } from '../Models/product-add.model';
 import { Observable } from 'rxjs';
 import { SysReqAdd } from '../Models/sysreq-add.model';
+import { ProductEdit } from '../Models/product-edit.model';
 @Injectable({
   providedIn: 'root'
 })
@@ -28,6 +29,9 @@ export class ProductManagerService {
     return this.http.get(this.baseUrl + '/GetCategories');
   }
 
+  editProduct(id: string, model: ProductEdit): Observable<ApiResult> {
+    return this.http.post<ApiResult>(this.baseUrl + '/editProduct/' + id, model);
+  }
 
   RemoveProduct(id: number){
     return this.http.post(this.baseUrl + '/RemoveProduct' + '/' + id, id);

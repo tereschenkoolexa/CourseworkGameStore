@@ -103,38 +103,6 @@ namespace CourseworkAPIAngular.Controllers
             }
         }
 
-        [HttpGet("GetProduct/{id}")]
-        public ProductItemDTO getProduct(int id)
-        {
-
-            var data = _context.Products.FirstOrDefault(t => t.Id == id);
-            ProductItemDTO prod = new ProductItemDTO();
-            prod.Name = data.Name;
-            prod.CompanyName = data.CompanyName;
-            prod.Price = data.Price;
-            prod.Description = data.Description;
-            prod.Image = data.Image;
-            prod.Data = data.Data;
-
-            return prod;
-        }
-
-        [HttpGet("SysReqProduct/{id}")]
-        public SystemRequirementsItemDTo getSystemRequirementsProduct(int id)
-        {
-
-            var data = _context.SystemRequirements.FirstOrDefault(t => t.ProdctId == id);
-            SystemRequirementsItemDTo sysreqProduct = new SystemRequirementsItemDTo();
-
-            sysreqProduct.IdProdut = data.ProdctId;
-            sysreqProduct.OS = data.OS;
-            sysreqProduct.Processor = data.Processor;
-            sysreqProduct.Graphics = data.Graphics;
-            sysreqProduct.Memory = data.Memory;
-            sysreqProduct.Storege = data.Storege;
-            
-            return sysreqProduct;
-        }
 
         [HttpGet("LanguagesProduct/{id}")]
         public IEnumerable<LanguagesItemDTO> getLanguagesProduct(int id)
@@ -300,5 +268,117 @@ namespace CourseworkAPIAngular.Controllers
                 };
             }
         }
+
+
+        [HttpGet("getProduct/{id}")]
+        public ProductFullItemDTO GetProduct([FromRoute]int id)
+        {
+            var data = _context.Products.FirstOrDefault(t => t.Id == id);
+            ProductFullItemDTO prod = new ProductFullItemDTO();
+            prod.Name = data.Name;
+            prod.CompanyName = data.CompanyName;
+            prod.Price = data.Price;
+            prod.Description = data.Description;
+            prod.Image = data.Image;
+            prod.Data = data.Data;
+
+            prod.sysreqProduct.OS = data.SystemRequirementProduct.OS;
+            prod.sysreqProduct.Processor = data.SystemRequirementProduct.Processor;
+            prod.sysreqProduct.Graphics = data.SystemRequirementProduct.Graphics;
+            prod.sysreqProduct.Memory = data.SystemRequirementProduct.Memory;
+            prod.sysreqProduct.Storege = data.SystemRequirementProduct.Storege;
+
+            foreach (var item in _context.ProductLanguages)
+            {
+                if (item.ProdctId == id)
+                {
+                    prod.listIdLang.Add(item.LanguageId);
+                }
+            }
+
+            foreach (var item in _context.ProductCategories)
+            {
+                if (item.ProdctId == id)
+                {
+                    prod.listIdCateg.Add(item.CategoryId);
+                }
+            }
+
+
+            return prod;
+
+        }
+
+
+
+        [HttpPost("editUser/{id}")]
+        public ResultDTO EditUser([FromRoute]int id, [FromBody]ProductEditDTO model)
+        {
+            var product = _context.Products.FirstOrDefault(t => t.Id == id);
+
+            product.Name = model.Name;
+            product.CompanyName = model.CompanyName;
+            product.Price = model.Price;
+            product.Description = model.Description;
+            product.Image = model.Image;
+            product.Data = model.Data;
+
+
+            product.SystemRequirementProduct.OS = model.sysreqProduct.OS;
+            product.SystemRequirementProduct.Processor = model.sysreqProduct.Processor;
+            product.SystemRequirementProduct.Graphics = model.sysreqProduct.Graphics;
+            product.SystemRequirementProduct.Memory = model.sysreqProduct.Memory;
+            product.SystemRequirementProduct.Storege = model.sysreqProduct.Storege;
+
+            foreach (var item in _context.ProductCategories)
+            {
+                if (item.ProdctId == id)
+                {
+                    _context.ProductCategories.Remove(item);
+                }
+            }
+            foreach (var item in _context.ProductLanguages)
+            {
+                if (item.ProdctId == id)
+                {
+                    _context.ProductLanguages.Remove(item);
+                }
+            }
+
+            foreach (var item in model.listIdLang)
+            {
+
+                ProductLanguages temp = new ProductLanguages();
+
+                temp.ProdctId = id;
+                temp.LanguageId = item;
+
+                _context.ProductLanguages.Add(temp);
+            }
+
+            foreach (var item in model.listIdCateg)
+            {
+
+                ProductCategories temp = new ProductCategories();
+
+                temp.ProdctId = id;
+                temp.CategoryId = item;
+
+                _context.ProductCategories.Add(temp);
+            }
+
+            _context.SaveChanges();
+
+
+
+            return new ResultDTO
+            {
+                Status = 200,
+                Message = "OK"
+            };
+
+        }
+
+
     }
 }
