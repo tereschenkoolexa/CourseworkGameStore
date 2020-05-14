@@ -24,6 +24,9 @@ export class ProductManagerComponent implements OnInit {
   selectedCategies: number[] = [];
   selectedLanguages: number[] = [];
 
+  imageBlob: File;
+
+
 
   modelSysReq = new SysReqAdd;
   model = new ProductAdd;
@@ -80,6 +83,10 @@ export class ProductManagerComponent implements OnInit {
     }
   }
 
+  setImage(files: FileList) {
+    this.imageBlob = files.item(0);
+  }
+
   onSubmit() {
 
     for(let i = 0; i < this.listOfDataCateg.length; i++){
@@ -117,7 +124,7 @@ export class ProductManagerComponent implements OnInit {
       this.notifier.notify('error', 'Please, enter description!');
       this.isError = true;
     }
-    if (this.model.image === null) {
+    if (this.imageBlob === null) {
       this.notifier.notify('error', 'Please, enter image!');
       this.isError = true;
     }
@@ -151,12 +158,26 @@ export class ProductManagerComponent implements OnInit {
       this.model.listidLang = this.selectedLanguages;
 
       console.log(this.model);
+      const date = new Date().valueOf();
+        let text = '';
+        const possibleText = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+        for (let i = 0; i < 5; i++) {
+          text += possibleText.charAt(Math.floor(Math.random() * possibleText.length));
+        }
+        // Replace extension according to your media type
 
+        const imageName = date + '.' + text + '.jpg';
+      const imageFile = new File([this.imageBlob], imageName, { type: 'image/jpeg' });
       this.productService.ProductAdd(this.model).subscribe(
         data => {
           console.log(data);
           if (data.status === 200) {
             this.notifier.notify('success', 'Add product!');
+            this.productService.uploadPhoto(imageFile).subscribe(data=>{
+              console.log(data);
+            }, error =>{
+              console.log(error);
+            });
             this.router.navigate(['/admin-panel/list-product']);
           } else {
             for (let i = 0; i < data.errors.length; i++) {

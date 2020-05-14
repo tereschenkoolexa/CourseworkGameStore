@@ -16,8 +16,6 @@ namespace CourseworkDTO.Models.Product
         public string Description { get; set; }
         [Required(ErrorMessage = "CompanyName is Rrequired!")]
         public string CompanyName { get; set; }
-        [Required(ErrorMessage = "Image is Rrequired!")]
-        public string Image { get; set; }
         [Required(ErrorMessage = "Data is Rrequired!")]
         public DateTime Data { get; set; }
 

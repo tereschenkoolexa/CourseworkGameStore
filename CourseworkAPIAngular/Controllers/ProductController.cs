@@ -9,9 +9,13 @@ using CourseworkDTO.Models.Product.Communication.ProductLanguages;
 using CourseworkDTO.Models.Product.Languages;
 using CourseworkDTO.Models.Product.SystemRequirements;
 using CourseworkDTO.Models.Results;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
+using System.Drawing.Imaging;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -23,16 +27,17 @@ namespace CourseworkAPIAngular.Controllers
     {
 
         private readonly EFContext _context;
+        private readonly IWebHostEnvironment _appEnvironment;
 
-
-        public ProductController(EFContext context)
+        public ProductController(IWebHostEnvironment appEnvironment, EFContext context)
         {
             _context = context;
-
+            _appEnvironment = appEnvironment;
         }
 
+
         [HttpPost("addProduct")]
-        public async Task<ResultDTO> AddProduct([FromBody] ProductAddDTO model)
+        public async Task<ResultDTO> AddProduct([FromBody] ProductAddDTO model, [FromForm(Name = "file")] IFormFile uploadedImage)
         {
             if (!ModelState.IsValid)
             {
@@ -51,7 +56,7 @@ namespace CourseworkAPIAngular.Controllers
                     CompanyName = model.CompanyName,
                     Price = model.Price,
                     Description = model.Description,
-                    Image = model.Image,
+                    Image = "",
                     Data = model.Data,
                 };
                 _context.Products.Add(product);
@@ -91,6 +96,7 @@ namespace CourseworkAPIAngular.Controllers
 
                     _context.ProductCategories.Add(temp);
                 }
+               
 
                 _context.SaveChanges();
                 
@@ -378,6 +384,59 @@ namespace CourseworkAPIAngular.Controllers
             };
 
         }
+
+
+
+        [HttpPost("UploadImage")]
+        public ResultDTO UploadImage([FromForm(Name = "file")] IFormFile uploadedImage)
+        {
+            string fileName = Guid.NewGuid().ToString() + ".jpg";
+            string path = _appEnvironment.WebRootPath + @"\Images\" + fileName;
+            if (uploadedImage == null)
+                return new ResultDTO
+                {
+                    Status = 400,
+                    Errors = new List<string> { "Не вдалося завантажити файл" }
+                };
+            if (uploadedImage.Length == 0)
+                return new ResultDTO
+                {
+                    Status = 400,
+                    Errors = new List<string> { "Файл порожній" }
+                };
+            try
+            {
+                using (Bitmap bmp = new Bitmap(uploadedImage.OpenReadStream()))
+                {
+                    var saveImage = ImageWorker.CreateImage(bmp, 400, 365);
+                    int idProduct = (from v in _context.Products orderby v.Id descending select v).FirstOrDefault().Id;
+                    if (saveImage != null)
+                    {
+                        saveImage.Save(path, ImageFormat.Jpeg);
+                        var product = _context.Products.Find(idProduct);
+                       
+                        _context.Products.Find(idProduct).Image = fileName;
+                        _context.SaveChanges();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return new ResultDTO
+                {
+                    Status = 400,
+                    Errors = new List<string> { "Не вдалося завантажити файл" },
+                    Message = ex.InnerException.Message
+                };
+            }
+            return new ResultDTO
+            {
+                Status = 200
+            };
+        }
+
+
+
 
 
     }

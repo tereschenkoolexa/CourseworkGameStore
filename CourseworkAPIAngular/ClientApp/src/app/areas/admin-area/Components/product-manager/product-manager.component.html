@@ -6,7 +6,7 @@
       <input type="number" placeholder="Ptice" [(ngModel)]="model.price" name="price"/>
       <input type="text" placeholder="Description" [(ngModel)]="model.description" name="description"/>
       <input type="text" placeholder="Company Name" [(ngModel)]="model.companyName" name="companyName"/>
-      <input type="text" placeholder="Image"  [(ngModel)]="model.image" name="image"/>
+      <input type="file" name="file" (change)="setImage($event.target.files)">
       <input type="date" placeholder="Data"  [(ngModel)]="model.data" name="data"/>
       </div>
 

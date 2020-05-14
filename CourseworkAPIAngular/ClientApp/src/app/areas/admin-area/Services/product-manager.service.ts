@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { ApiResult } from 'src/app/Models/result.model';
 import { ProductAdd } from '../Models/product-add.model';
 import { Observable } from 'rxjs';
@@ -10,8 +10,9 @@ import { ProductEdit } from '../Models/product-edit.model';
 })
 export class ProductManagerService {
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) { this.headers = new HttpHeaders(); }
   baseUrl = '/api/Product';
+  headers: HttpHeaders;
 
   ProductAdd(model: ProductAdd): Observable<ApiResult> {
     return this.http.post<ApiResult>(this.baseUrl + `/addProduct`, model);
@@ -37,4 +38,15 @@ export class ProductManagerService {
     return this.http.post(this.baseUrl + '/RemoveProduct' + '/' + id, id);
 
   }
+
+  uploadPhoto(fileToUpload: File){
+    const formData: FormData = new FormData();
+
+    this.headers.append('Content-Type', 'multipart/form-data')
+    formData.append('file', fileToUpload);
+    console.log(formData.get('file'));
+    return this.http.post<ApiResult>(this.baseUrl + '/UploadImage' + '/' , formData, {headers: this.headers});
+  }
+
+
 }
