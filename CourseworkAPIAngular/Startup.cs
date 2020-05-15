@@ -32,8 +32,7 @@ namespace CourseworkAPIAngular
         public void ConfigureServices(IServiceCollection services)
         {
 
-            services.AddCors();
-
+            
             services.AddDbContext<EFContext>(options =>
             options.UseSqlServer(Configuration["ConnectionString"],
             b => b.MigrationsAssembly("CourseworkAPIAngular"))

@@ -43,6 +43,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="ClientApp\src\assets\Images\" />
     <Folder Include="wwwroot\Images\" />
   </ItemGroup>
 

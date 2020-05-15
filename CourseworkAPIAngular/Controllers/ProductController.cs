@@ -4,6 +4,7 @@ using CourseworkDataAccess.Entity.Store.Product;
 using CourseworkDataAccess.Entity.Store.Product.Communication;
 using CourseworkDTO.Models.Product;
 using CourseworkDTO.Models.Product.Categories;
+using CourseworkDTO.Models.Product.Communication.Library;
 using CourseworkDTO.Models.Product.Communication.ProductCategories;
 using CourseworkDTO.Models.Product.Communication.ProductLanguages;
 using CourseworkDTO.Models.Product.Languages;
@@ -438,6 +439,48 @@ namespace CourseworkAPIAngular.Controllers
 
 
 
+        [HttpPost("buyProduct")]
+        public ResultDTO BuyProduct([FromRoute] int idProduct, [FromRoute] string idUser)
+        {
+            if (idUser != null)
+            {
+                return new ResultDTO
+                {
+                    Status = 500,
+                    Message = "Error",
+                    Errors = Validation.GetErrorsByModel(ModelState)
+                };
+            }
+            else {
+                Library libraryItem = new Library();
+                libraryItem.ProdctId = idProduct;
+                libraryItem.UserId = idUser;
+
+                _context.Library.Add(libraryItem);
+
+            return new ResultDTO
+            {
+                Status = 200,
+                Message = "OK"
+            };
+            }
+        }
+
+        [HttpPost("Library")]
+        public List<int> Library( [FromRoute] string idUser)
+        {
+
+            List<int> lib = new List<int>();
+
+            foreach(var item in _context.Library)
+            {
+                if (item.UserId == idUser)
+                    lib.Add(item.ProdctId);
+            }
+
+            return lib;
+
+        }
 
     }
 }

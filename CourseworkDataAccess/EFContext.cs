@@ -24,6 +24,7 @@ namespace CourseworkDataAccess
         public DbSet<ProductCategories> ProductCategories { get; set; }
         public DbSet<ProductLanguages> ProductLanguages { get; set; }
 
+        public DbSet<Library> Library { get; set; }
 
         public DbSet<SystemRequirements> SystemRequirementsProduct { get; set; }
 
@@ -36,10 +37,12 @@ namespace CourseworkDataAccess
                 .HasForeignKey<UserMoreInfo>(uid => uid.id);
 
             builder.Entity<ProductCategories>()
-      .HasKey(c => new { c.CategoryId, c.ProdctId });
+            .HasKey(c => new { c.CategoryId, c.ProdctId });
 
             builder.Entity<ProductLanguages>()
-.HasKey(c => new { c.LanguageId, c.ProdctId });
+            .HasKey(c => new { c.LanguageId, c.ProdctId });
+            builder.Entity<Library>()
+            .HasKey(c => new { c.UserId, c.ProdctId });
 
             base.OnModelCreating(builder);
         }

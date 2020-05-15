@@ -22,6 +22,7 @@ export class ListProductComponent implements OnInit {
     searchText: string;
 
     deleteProduct(id: number) {
+      this.spinner.show();
       this.productService.RemoveProduct(id).subscribe(
         (data: ApiResult) => {
           if(data.status === 200){
@@ -29,6 +30,7 @@ export class ListProductComponent implements OnInit {
 
             this.listOfData = this.listOfData.filter(t => t.id !== id);
             this.listOfSearch = this.listOfSearch.filter(t => t.id !== id);
+            this.spinner.hide();
           } else {
             for ( let i = 0; i < data.errors; i++) {
               this.notifier.notify('error', data.errors[i]);
