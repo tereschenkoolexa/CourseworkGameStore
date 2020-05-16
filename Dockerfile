@@ -35,12 +35,12 @@ ENV LANG uk_UA.UTF-8
 
 WORKDIR /app
 EXPOSE 80
-RUN curl -sL https://deb.nodesource.com/setup_13.x |  bash -
+RUN curl -sL https://deb.nodesource.com/setup_14.x |  bash -
 RUN apt-get install -y nodejs
 
 FROM mcr.microsoft.com/dotnet/core/sdk:3.1-buster AS build
 
-RUN curl -sL https://deb.nodesource.com/setup_13.x |  bash -
+RUN curl -sL https://deb.nodesource.com/setup_14.x |  bash -
 RUN apt-get install -y nodejs
 
 WORKDIR /src
