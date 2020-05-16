@@ -11,15 +11,8 @@
       "schematics": {},
       "architect": {
         "build": {
-          "builder": "@angular-builders/custom-webpack:browser",
-            "options": {
-              "customWebpackConfig": {
-              "path": "./extra-webpack.config.js",
-              "mergeStrategies": {
-              "module.rules": "append"
-            },
-              "replaceDuplicatePlugins": true
-            },
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
             "progress": false,
             "extractCss": true,
             "outputPath": "dist",
@@ -31,8 +24,6 @@
               "src/assets"
             ],
             "styles": [
-              "src/theme.less",
-              "node_modules/ng-zorro-antd/ng-zorro-antd.less",
               "./node_modules/@angular/material/prebuilt-themes/purple-green.css",
               "node_modules/bootstrap/dist/css/bootstrap.min.css",
               "src/styles.css"
@@ -60,7 +51,7 @@
           }
         },
         "serve": {
-          "builder": "@angular-builders/custom-webpack:dev-server",
+          "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
             "browserTarget": "CourseworkAPIAngular:build"
           },
