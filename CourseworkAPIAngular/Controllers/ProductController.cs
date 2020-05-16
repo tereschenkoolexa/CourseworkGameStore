@@ -440,9 +440,9 @@ namespace CourseworkAPIAngular.Controllers
 
 
         [HttpPost("buyProduct")]
-        public ResultDTO BuyProduct([FromRoute] int idProduct, [FromRoute] string idUser)
+        public ResultDTO BuyProduct([FromBody]LibraryAddDTO model)
         {
-            if (idUser != null)
+            if (model.idUser == null)
             {
                 return new ResultDTO
                 {
@@ -453,11 +453,12 @@ namespace CourseworkAPIAngular.Controllers
             }
             else {
                 Library libraryItem = new Library();
-                libraryItem.ProdctId = idProduct;
-                libraryItem.UserId = idUser;
+                libraryItem.ProdctId = model.idProduct;
+                libraryItem.UserId = model.idUser;
 
                 _context.Library.Add(libraryItem);
 
+                _context.SaveChanges();
             return new ResultDTO
             {
                 Status = 200,
@@ -466,15 +467,15 @@ namespace CourseworkAPIAngular.Controllers
             }
         }
 
-        [HttpPost("Library")]
-        public List<int> Library( [FromRoute] string idUser)
+        [HttpGet("getLibrary/{id}")]
+        public List<int> GetLibrary([FromRoute] string id)
         {
 
             List<int> lib = new List<int>();
 
             foreach(var item in _context.Library)
             {
-                if (item.UserId == idUser)
+                if (item.UserId == id)
                     lib.Add(item.ProdctId);
             }
 

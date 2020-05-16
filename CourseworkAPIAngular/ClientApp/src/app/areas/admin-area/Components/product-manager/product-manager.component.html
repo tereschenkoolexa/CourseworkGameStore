@@ -2,23 +2,24 @@
     <h2>Add product</h2>
     <form  #myForm="ngForm" (ngSubmit)="onSubmit();">
       <div>
-      <input type="text" placeholder="Name" [(ngModel)]="model.name" name="name"/>
-      <input type="number" placeholder="Ptice" [(ngModel)]="model.price" name="price"/>
-      <input type="text" placeholder="Description" [(ngModel)]="model.description" name="description"/>
-      <input type="text" placeholder="Company Name" [(ngModel)]="model.companyName" name="companyName"/>
+
+      <input nz-input type="text" placeholder="Name" [(ngModel)]="model.name" name="name"/>
+      <input nz-input type="number" placeholder="Price" [(ngModel)]="model.price" name="price"/>
+      <textarea nz-input placeholder="Controlled autosize" [nzAutosize]="{ minRows: 3, maxRows: 5 }" type="text" placeholder="Description" [(ngModel)]="model.description" name="description"></textarea>
+      <input nz-input type="text" placeholder="Company Name" [(ngModel)]="model.companyName" name="companyName"/>
+      <nz-date-picker nzFormat="yyyy-MM-dd HH:mm:ss" type="date" placeholder="Data"  [(ngModel)]="model.data" name="data"></nz-date-picker>
       <input type="file" name="file" (change)="setImage($event.target.files)">
-      <input type="date" placeholder="Data"  [(ngModel)]="model.data" name="data"/>
       </div>
 
-      <h3>sysReq</h3>
+      <h3>System requirement</h3>
       <div>
-      <input type="text" placeholder="OS" [(ngModel)]="modelSysReq.os" name="os"/>
-      <input type="text" placeholder="Processor" [(ngModel)]="modelSysReq.processor" name="processor"/>
-      <input type="text" placeholder="Graphics" [(ngModel)]="modelSysReq.graphics" name="graphics"/>
-      <input type="text" placeholder="Memory" [(ngModel)]="modelSysReq.memory" name="memory"/>
-      <input type="text" placeholder="Storege"  [(ngModel)]="modelSysReq.storege" name="storege"/>
+      <input nz-input type="text" placeholder="OS" [(ngModel)]="modelSysReq.os" name="os"/>
+      <input nz-input type="text" placeholder="Processor" [(ngModel)]="modelSysReq.processor" name="processor"/>
+      <input nz-input type="text" placeholder="Graphics" [(ngModel)]="modelSysReq.graphics" name="graphics"/>
+      <input nz-input type="text" placeholder="Memory" [(ngModel)]="modelSysReq.memory" name="memory"/>
+      <input nz-input type="text" placeholder="Storege"  [(ngModel)]="modelSysReq.storege" name="storege"/>
     </div>
-    <h3>lang</h3>
+    <h3>Language</h3>
 
     <nz-table
     #rowSelectionTableLang
@@ -36,14 +37,14 @@
     <tbody>
       <tr *ngFor="let data of rowSelectionTableLang.data">
         <td>
-          <input type="checkbox" (click)="setLanguage(data.idLanguage)" >
+          <label  nz-checkbox type="checkbox" (click)="setLanguage(data.idLanguage)" ></label>
         </td>
         <td>{{ data.nameLanguage }}</td>
       </tr>
     </tbody>
   </nz-table>
 
-  <h3>cate</h3>
+  <h3>Caregory</h3>
     <nz-table
     #rowSelectionTableCategory
     [nzFrontPagination]="false"
@@ -61,7 +62,7 @@
     <tbody>
       <tr *ngFor="let data of rowSelectionTableCategory.data">
         <td>
-          <input type="checkbox" (click)="setCategory(data.idCategory)" >
+          <label nz-checkbox type="checkbox" (click)="setCategory(data.idCategory)" ></label>
         </td>
         <td>{{ data.nameCategory }}</td>
       </tr>
@@ -70,6 +71,6 @@
 
 
 
-  <button type="submit">Add</button>
+  <button nz-button nzType="primary" nzBlock type="submit" style="background-color: rgb(0,80,1) !important; border-color: rgb(1, 58, 2);">Add</button>
     </form>
   </div>

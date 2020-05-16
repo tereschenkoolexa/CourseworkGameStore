@@ -51,13 +51,10 @@
           </li>
 
           <li *ngIf="isLoggedIn === true && isAdmin === false" class="nav-item" [routerLinkActive]="['link-active']">
-            <a class="nav-link text-dark" [routerLink]="['/login']"
-              >Libary</a>
+            <a class="nav-link text-dark" [routerLink]="['user-panel/library']"
+              >Library</a>
           </li>
-          <li *ngIf="isLoggedIn === true && isAdmin === false" class="nav-item" [routerLinkActive]="['link-active']">
-            <a class="nav-link text-dark" [routerLink]="['/register']"
-              >Profile</a>
-          </li>
+          
           <li *ngIf="isLoggedIn === true" class="nav-item logout">
             <a class="nav-link text-dark" (click)="LogOut()">Logout</a>
           </li>

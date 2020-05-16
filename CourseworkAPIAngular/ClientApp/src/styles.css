@@ -2,7 +2,6 @@
 @import "~angular-notifier/styles";
 @import "~ng-zorro-antd/ng-zorro-antd.min.css";
 @import '~@angular/material/prebuilt-themes/deeppurple-amber.css';
-
 /* Provide sufficient contrast against white background */
 a {
   color: #0366d6;
