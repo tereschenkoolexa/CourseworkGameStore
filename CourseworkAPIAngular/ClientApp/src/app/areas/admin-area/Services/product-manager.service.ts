@@ -48,5 +48,12 @@ export class ProductManagerService {
     return this.http.post<ApiResult>(this.baseUrl + '/UploadImage' + '/' , formData, {headers: this.headers});
   }
 
+  getLibrary(id: string) {
+    return this.http.get(this.baseUrl + '/getLibrary' + '/' + id);
+  }
+
+  getProductStore(id: number) {
+    return this.http.get(this.baseUrl + '/getProductStore' + '/' + id);
+  }
 
 }

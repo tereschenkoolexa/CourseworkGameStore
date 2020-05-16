@@ -22,7 +22,7 @@ SignIn(model: LoginModel): Observable<ApiResult> {
   return this.http.post<ApiResult>(this.baseUrl + '/login', model);
 }
 
-isAdmin(){
+isAdmin() {
   const token = localStorage.getItem('token');
   if (token !== null){
     const jwtData = token.split('.')[1];

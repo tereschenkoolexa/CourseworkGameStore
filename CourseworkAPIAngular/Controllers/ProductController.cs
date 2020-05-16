@@ -73,10 +73,10 @@ namespace CourseworkAPIAngular.Controllers
                     Storege = model.sysreqProduct.Storege,
                     ProdctId = idProduct
                 };
-        
+
                 _context.SystemRequirementsProduct.Add(systemrequirements);
 
-                foreach ( var item in model.listIdLang)
+                foreach (var item in model.listIdLang)
                 {
 
                     ProductLanguages temp = new ProductLanguages();
@@ -97,10 +97,10 @@ namespace CourseworkAPIAngular.Controllers
 
                     _context.ProductCategories.Add(temp);
                 }
-               
+
 
                 _context.SaveChanges();
-                
+
 
                 return new ResultDTO
                 {
@@ -118,9 +118,9 @@ namespace CourseworkAPIAngular.Controllers
             List<LanguagesItemDTO> data = new List<LanguagesItemDTO>();
 
 
-            foreach(var item in _context.ProductLanguages)
+            foreach (var item in _context.ProductLanguages)
             {
-                if(item.ProdctId == id)
+                if (item.ProdctId == id)
                 {
                     Language temp = _context.Languages.FirstOrDefault(t => t.Id == item.LanguageId);
 
@@ -160,7 +160,7 @@ namespace CourseworkAPIAngular.Controllers
             return data;
 
         }
-        
+
         [HttpGet("GetLanguages")]
         public IEnumerable<LanguagesItemDTO> GetLanguages()
         {
@@ -237,9 +237,9 @@ namespace CourseworkAPIAngular.Controllers
                 var product = _context.Products.FirstOrDefault(t => t.Id == id);
                 var systemRequirementsProduct = _context.SystemRequirementsProduct.FirstOrDefault(t => t.ProdctId == id);
                 _context.Products.Remove(product);
-                foreach(var item in _context.ProductCategories)
+                foreach (var item in _context.ProductCategories)
                 {
-                    if(item.ProdctId == id)
+                    if (item.ProdctId == id)
                     {
                         _context.ProductCategories.Remove(item);
                     }
@@ -255,7 +255,7 @@ namespace CourseworkAPIAngular.Controllers
                 {
                     _context.SystemRequirementsProduct.Remove(systemRequirementsProduct);
                 }
-                    _context.SaveChanges();
+                _context.SaveChanges();
                 return new ResultDTO
                 {
                     Status = 200,
@@ -277,11 +277,11 @@ namespace CourseworkAPIAngular.Controllers
         }
 
 
-        [HttpGet("getProduct/{id}")]
-        public ProductFullItemDTO GetProduct([FromRoute]int id)
+        [HttpGet("getProductStore/{id}")]
+        public ProductItemDTO GetProduct([FromRoute]int id)
         {
             var data = _context.Products.FirstOrDefault(t => t.Id == id);
-            ProductFullItemDTO prod = new ProductFullItemDTO();
+            ProductItemDTO prod = new ProductItemDTO();
             prod.Name = data.Name;
             prod.CompanyName = data.CompanyName;
             prod.Price = data.Price;
@@ -289,33 +289,93 @@ namespace CourseworkAPIAngular.Controllers
             prod.Image = data.Image;
             prod.Data = data.Data;
 
-            prod.sysreqProduct.OS = data.SystemRequirementProduct.OS;
-            prod.sysreqProduct.Processor = data.SystemRequirementProduct.Processor;
-            prod.sysreqProduct.Graphics = data.SystemRequirementProduct.Graphics;
-            prod.sysreqProduct.Memory = data.SystemRequirementProduct.Memory;
-            prod.sysreqProduct.Storege = data.SystemRequirementProduct.Storege;
-
-            foreach (var item in _context.ProductLanguages)
-            {
-                if (item.ProdctId == id)
-                {
-                    prod.listIdLang.Add(item.LanguageId);
-                }
-            }
-
-            foreach (var item in _context.ProductCategories)
-            {
-                if (item.ProdctId == id)
-                {
-                    prod.listIdCateg.Add(item.CategoryId);
-                }
-            }
-
-
+            
             return prod;
 
         }
 
+        [HttpGet("getSysReq/{id}")]
+        public SystemRequirementsItemDTo GetSysReq([FromRoute]int id)
+        {
+
+            var data = _context.SystemRequirements.FirstOrDefault(t => t.ProdctId == id);
+
+            SystemRequirementsItemDTo sysreqProduct = new SystemRequirementsItemDTo();
+
+            sysreqProduct.OS = data.OS;
+            sysreqProduct.Processor = data.Processor;
+            sysreqProduct.Graphics = data.Graphics;
+            sysreqProduct.Memory = data.Memory;
+            sysreqProduct.Storege = data.Storege;
+
+            return sysreqProduct;
+
+        }
+
+        [HttpGet("getListLangId")]
+        public IEnumerable<string> getListLangId([FromRoute]int id){
+
+            List<string> languages = new List<string>();
+
+            List<int> idLang = new List<int>();
+
+            foreach(var item in _context.ProductLanguages)
+            {
+
+                if(item.ProdctId == id)
+                {
+                    idLang.Add(item.LanguageId);
+                }
+
+            }
+
+            foreach(var item in _context.Languages)
+            {
+                for(int i=0;i<idLang.Count();i++)
+                {
+                    if(item.Id == idLang[i])
+                    {
+                        languages.Add(item.Name);
+                    }
+                }
+            }
+
+            return languages;
+
+        }
+
+        [HttpGet("getListtCategId")]
+        public IEnumerable<string> getListCategId([FromRoute]int id)
+        {
+
+            List<string> categories = new List<string>();
+
+            List<int> idCateg = new List<int>();
+
+            foreach (var item in _context.ProductCategories)
+            {
+
+                if (item.ProdctId == id)
+                {
+                    idCateg.Add(item.CategoryId);
+                }
+
+            }
+
+            foreach (var item in _context.Categories)
+            {
+                for (int i = 0; i < idCateg.Count(); i++)
+                {
+                    if (item.Id == idCateg[i])
+                    {
+                        categories.Add(item.Name);
+                    }
+                }
+            }
+
+            return categories;
+
+        }
 
 
         [HttpPost("editUser/{id}")]
@@ -468,7 +528,7 @@ namespace CourseworkAPIAngular.Controllers
         }
 
         [HttpGet("getLibrary/{id}")]
-        public List<int> GetLibrary([FromRoute] string id)
+        public IEnumerable<int> GetLibrary([FromRoute] string id)
         {
 
             List<int> lib = new List<int>();

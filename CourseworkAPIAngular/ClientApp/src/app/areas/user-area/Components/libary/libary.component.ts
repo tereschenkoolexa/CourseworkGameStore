@@ -34,7 +34,7 @@ export class LibaryComponent implements OnInit {
       const decodedJwtJsonToken = window.atob(jwtToken);
       const decodedJwtToken = JSON.parse(decodedJwtJsonToken);
 
-      this.libraryService.getLibrary(decodedJwtToken.id).subscribe(
+      this.productService.getLibrary(decodedJwtToken.id).subscribe(
         (AllProductsId: number[]) => {
           this.listIdProduct = AllProductsId;
         }

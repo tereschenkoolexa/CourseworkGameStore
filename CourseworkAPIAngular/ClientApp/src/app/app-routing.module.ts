@@ -39,7 +39,7 @@ const routes: Routes = [
         { path: 'basket', component: BasketComponent, pathMatch: 'full'},
         { path: 'friends', component: FriendsComponent, pathMatch: 'full'},
         { path: 'library', component: LibaryComponent, pathMatch: 'full'},
-        { path: 'product', component: ProductComponent, pathMatch: 'full'},
+        { path: 'product/:id', component: ProductComponent, pathMatch: 'full'},
     ]},
     { path: '**', component: NotFoundComponent}
   ];

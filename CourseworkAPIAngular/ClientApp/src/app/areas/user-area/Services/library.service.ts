@@ -18,8 +18,6 @@ export class LibraryService {
     return this.http.post<ApiResult>(this.baseUrl + `/buyProduct`, libraryItem);
   }
 
-  getLibrary(id: string) {
-    return this.http.get(this.baseUrl + '/getLibrary' + '/' + id);
-  }
+  
 
 }
